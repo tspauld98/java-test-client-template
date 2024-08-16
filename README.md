@@ -14,4 +14,5 @@ TBD
 
 TBD
 
-<footer align="center">Copyright &169; 2024 Battle Road Consulting. All rights reserved.</footer>
+<br/><br/>
+<footer align="center">Copyright &#169; 2024 Battle Road Consulting. All rights reserved.</footer>
