@@ -1,3 +1,7 @@
+###
+# Copyright (c) 2024 Battle Road Consulting. All rights reserved.
+###
+
 # Ignore Gradle project-specific cache directory
 .gradle
 
