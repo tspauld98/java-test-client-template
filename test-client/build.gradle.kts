@@ -8,13 +8,21 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    jacoco
 }
 
 group = "info.rx00405"
 version = "1.0-SNAPSHOT"
 
+configurations {}
+
+val cucumberRuntime by configurations.creating {
+    extendsFrom(configurations["testImplementation"])
+}
+
 repositories {
     // Use Maven Central for resolving dependencies.
+    mavenLocal()
     mavenCentral()
 }
 
@@ -29,6 +37,8 @@ dependencies {
     implementation(platform("org.junit:junit-bom:5.10.3"))
     implementation("org.junit.jupiter:junit-jupiter")
     implementation("org.junit.platform:junit-platform-launcher")
+    implementation("io.cucumber:cucumber-java:7.18.1")
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -46,6 +56,7 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+    systemProperty("cucumber.junit-platform.naming-strategy", "long")
 }
 
 tasks {
@@ -65,4 +76,30 @@ tasks {
 // Ensuring that both jars are built when running the build task
 tasks.build {
     dependsOn(tasks.jar, tasks.shadowJar)
+}
+
+task("cucumber") {
+    dependsOn("assemble", "compileTestJava")
+    doLast {
+        javaexec {
+            mainClass.set("io.cucumber.core.cli.Main")
+            classpath = cucumberRuntime + sourceSets.main.get().output + sourceSets.test.get().output
+            // Change glue for your project package where the step definitions are.
+            // And where the feature files are.
+            args = listOf("--plugin", "pretty", "--glue", "info.rx00405.test.client.tests.features", "src/main/resources/tests")
+            // Configure jacoco agent for the test coverage.
+            val jacocoAgent = zipTree(configurations.jacocoAgent.get().singleFile)
+                .filter { it.name == "jacocoagent.jar" }
+                .singleFile
+            jvmArgs = listOf("-javaagent:$jacocoAgent=destfile=$buildDir/results/jacoco/cucumber.exec,append=false")
+        }
+    }
+}
+
+tasks.jacocoTestReport {
+    // Give jacoco the file generated with the cucumber tests for the coverage.
+    executionData(files("$buildDir/jacoco/test.exec", "$buildDir/results/jacoco/cucumber.exec"))
+    reports {
+        xml.required.set(true)
+    }
 }

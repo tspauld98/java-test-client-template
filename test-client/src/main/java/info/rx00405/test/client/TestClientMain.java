@@ -11,5 +11,7 @@ public class TestClientMain {
 
     public static void main(String[] args) {
         System.out.println(new TestClientMain().getGreeting());
+        PlatformTestRunner runner = new PlatformTestRunner();
+        runner.runAll(new ConfigOptions());
     }
 }
