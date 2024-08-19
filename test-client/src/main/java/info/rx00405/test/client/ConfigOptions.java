@@ -7,8 +7,30 @@
 public class ConfigOptions {
     boolean runQuiet = false;
     String isoFeature = null;
+    boolean printHelp = false;
 
-    public boolean getRunQuiet() {
+    public void processArgs(String[] args) {
+        for (String arg : args) {
+            switch (arg) {
+                case "--run-quiet":
+                    runQuiet = true;
+                    break;
+                case "--iso-feature":
+                    // TODO: Add support for this
+                    break;
+                case "--help":
+                default:
+                    printHelp = true;
+                    break;
+            }
+        }
+    }
+
+    public boolean mustPrintHelp() {
+        return printHelp;
+    }
+
+    public boolean mustRunQuiet() {
         return runQuiet;
     }
 

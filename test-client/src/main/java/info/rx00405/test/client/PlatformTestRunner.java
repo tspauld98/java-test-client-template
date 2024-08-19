@@ -28,7 +28,7 @@ public class PlatformTestRunner {
     LauncherDiscoveryRequest getDefaultRequest() {
         return LauncherDiscoveryRequestBuilder.request()
             .configurationParameter("cucumber.glue", "info.rx00405.test.client.tests.features")
-            .configurationParameter("cucumber.plugin", "pretty")
+            .configurationParameter("cucumber.plugin", "pretty, html:test-results/index.html, junit:test-results/cucumber-report.xml, json:test-results/cucumber-report.json")
             .selectors(DiscoverySelectors.selectPackage("info.rx00405.test.client.tests.features"))
             .build();
     }
@@ -36,7 +36,7 @@ public class PlatformTestRunner {
     LauncherDiscoveryRequest getDefaultIsoFeatureRequest(String isoFeature) {
         return LauncherDiscoveryRequestBuilder.request()
             .configurationParameter("cucumber.glue", "info.rx00405.test.client.tests.features")
-            .configurationParameter("cucumber.plugin", "pretty")
+            .configurationParameter("cucumber.plugin", "pretty, html:test-results/index.html, junit:test-results/cucumber-report.xml, json:test-results/cucumber-report.json")
             .selectors(DiscoverySelectors.selectPackage("info.rx00405.test.client.tests.features." + isoFeature))
             .build();
     }
@@ -59,7 +59,7 @@ public class PlatformTestRunner {
 
     public void runAll(ConfigOptions config) {
         LauncherDiscoveryRequest request = null;
-        if (!config.getRunQuiet()) {
+        if (!config.mustRunQuiet()) {
             if (config.getIsoFeature() != null) {
                 request = getDefaultIsoFeatureRequest(config.getIsoFeature());
             } else {
