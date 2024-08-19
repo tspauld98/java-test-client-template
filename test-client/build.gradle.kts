@@ -37,8 +37,9 @@ dependencies {
     implementation(platform("org.junit:junit-bom:5.10.3"))
     implementation("org.junit.jupiter:junit-jupiter")
     implementation("org.junit.platform:junit-platform-launcher")
+    implementation("org.junit.platform:junit-platform-suite-api")
     implementation("io.cucumber:cucumber-java:7.18.1")
-
+    implementation("io.cucumber:cucumber-junit-platform-engine:7.18.1")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -86,7 +87,7 @@ task("cucumber") {
             classpath = cucumberRuntime + sourceSets.main.get().output + sourceSets.test.get().output
             // Change glue for your project package where the step definitions are.
             // And where the feature files are.
-            args = listOf("--plugin", "pretty", "--glue", "info.rx00405.test.client.tests.features", "src/main/resources/tests")
+            args = listOf("--plugin", "pretty", "--glue", "info.rx00405.test.client.tests.features", "src/main/resources")
             // Configure jacoco agent for the test coverage.
             val jacocoAgent = zipTree(configurations.jacocoAgent.get().singleFile)
                 .filter { it.name == "jacocoagent.jar" }

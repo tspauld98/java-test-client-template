@@ -10,3 +10,6 @@
 
 # Ignore Gradle build output directory
 build
+
+# Ignore test output directory
+test-results
