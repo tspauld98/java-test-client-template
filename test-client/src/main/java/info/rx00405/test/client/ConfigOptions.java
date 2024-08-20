@@ -7,17 +7,23 @@
 public class ConfigOptions {
     boolean runQuiet = false;
     String isoFeature = null;
+    String token = null;
     boolean printHelp = false;
     boolean invalidArg = false;
 
     public void processArgs(String[] args) {
-        for (String arg : args) {
-            switch (arg) {
+        for (int i=0; i < args.length; i++) {
+            switch (args[i]) {
                 case "--run-quiet":
                     runQuiet = true;
                     break;
                 case "--iso-feature":
-                    // TODO: Add support for this
+                    i++;
+                    isoFeature = args[i];
+                    break;
+                case "--token":
+                    i++;
+                    token = args[i];
                     break;
                 case "--help":
                     printHelp = true;
