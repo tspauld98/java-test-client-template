@@ -9,6 +9,7 @@ plugins {
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
     jacoco
+    `maven-publish`
 }
 
 group = "info.rx00405"
@@ -40,6 +41,10 @@ dependencies {
     implementation("org.junit.platform:junit-platform-suite-api")
     implementation("io.cucumber:cucumber-java:7.18.1")
     implementation("io.cucumber:cucumber-junit-platform-engine:7.18.1")
+    implementation("org.apache.httpcomponents.client5:httpclient5-fluent:5.3.1")
+    implementation("org.slf4j:slf4j-api:2.0.16")
+    implementation("org.slf4j:slf4j-simple:2.0.16")
+    implementation("com.google.code.gson:gson:2.11.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

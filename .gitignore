@@ -13,3 +13,6 @@ build
 
 # Ignore test output directory
 test-results
+
+# Ignore Mac-specific files
+.DS_Store
