@@ -8,6 +8,7 @@ public class ConfigOptions {
     boolean runQuiet = false;
     String isoFeature = null;
     boolean printHelp = false;
+    boolean invalidArg = false;
 
     public void processArgs(String[] args) {
         for (String arg : args) {
@@ -19,11 +20,17 @@ public class ConfigOptions {
                     // TODO: Add support for this
                     break;
                 case "--help":
-                default:
                     printHelp = true;
+                    break;
+                default:
+                    invalidArg = true;
                     break;
             }
         }
+    }
+
+    public boolean hasInvalidArg() {
+        return invalidArg;
     }
 
     public boolean mustPrintHelp() {

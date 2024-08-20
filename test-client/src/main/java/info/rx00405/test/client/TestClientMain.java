@@ -7,6 +7,8 @@ package info.rx00405.test.client;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
 
 public class TestClientMain {
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_RED = "\u001B[31m";
     private static final String heading = "\n###############################################################################\n\n" + //
         "#######    Java Behavior-Driven Test Client\n\n" + //
         "###############################################################################\n";
@@ -17,43 +19,45 @@ public class TestClientMain {
         "\tcomponents. It is packaged as an executable JAR file and designed\n" + //
         "\tto be run quietly so it can be integrated into CI/CD pipelines for\n" + //
         "\tend-to-end (E2E) integration testing.\n";
-    private static final String synopsis = "## SYNOPSIS\n\n" + //
+    private static final String synopsis = "## USAGE\n\n" + //
         "\tjava -jar [PATH to JAR/]test-client-shadow-<version>.jar [--run-quiet] [--iso-feature <iso-feature>] [--help]\n";
     private static final String arguments = "## OPTIONS\n\n" + //
         "\t--run-quiet\t\t\tRun in quiet mode. The client will not print any output.\n" + //
         // "\t--iso-feature <iso-feature>\tRun only the feature indicated by the <iso-feature> argument.\n" + //
         "\t--help\t\t\t\tPrint this help message.\n";
 
-    public String getGreeting() {
-        return "Hello World!";
-    }
-
     public static void main(String[] args) {
         ConfigOptions options = new ConfigOptions();
         options.processArgs(args);
 
-        if (options.mustPrintHelp()) {
+        if (options.hasInvalidArg()) {
             System.out.println(heading);
-            System.out.println(description);
+            System.err.println(ANSI_RED + "ERROR:  Invalid argument. Use --help for more information.\n" + ANSI_RESET);
             System.out.println(synopsis);
-            System.out.println(arguments);
         } else {
-            if (!options.mustRunQuiet()) System.out.println(heading);
+            if (options.mustPrintHelp()) {
+                System.out.println(heading);
+                System.out.println(description);
+                System.out.println(synopsis);
+                System.out.println(arguments);
+            } else {
+                if (!options.mustRunQuiet()) System.out.println(heading);
 
-            PlatformTestRunner runner = new PlatformTestRunner();
-            runner.runAll(options);
+                PlatformTestRunner runner = new PlatformTestRunner();
+                runner.runAll(options);
 
-            if (!options.mustRunQuiet()) {
-                TestExecutionSummary summary = runner.getListener().getSummary();
-                System.out.println();
-                summary.printTo(new java.io.PrintWriter(System.out));
-                System.out.println();
+                if (!options.mustRunQuiet()) {
+                    TestExecutionSummary summary = runner.getListener().getSummary();
+                    System.out.println();
+                    summary.printTo(new java.io.PrintWriter(System.out));
+                    System.out.println();
 
-                // Additional details
-                System.out.println("Tests found: " + summary.getTestsFoundCount() + "\n");
-                System.out.println("Tests succeeded: " + summary.getTestsSucceededCount() + "\n");
-                System.out.println("Tests failed: " + summary.getTestsFailedCount() + "\n");
-                System.out.println("Tests skipped: " + summary.getTestsSkippedCount() + "\n");
+                    // Additional details
+                    System.out.println("Tests found: " + summary.getTestsFoundCount() + "\n");
+                    System.out.println("Tests succeeded: " + summary.getTestsSucceededCount() + "\n");
+                    System.out.println("Tests failed: " + summary.getTestsFailedCount() + "\n");
+                    System.out.println("Tests skipped: " + summary.getTestsSkippedCount() + "\n");
+                }
             }
         }
     }
