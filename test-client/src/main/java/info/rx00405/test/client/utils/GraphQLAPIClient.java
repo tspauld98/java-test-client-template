@@ -18,7 +18,10 @@ import com.google.gson.JsonParser;
 
 import java.io.IOException;
 
-public class HttpGetUtils {
+public class GraphQLAPIClient {
+
+    private String endpointURL = "";
+    private String accessToken = "";
 
     static class Result {
 
@@ -27,12 +30,19 @@ public class HttpGetUtils {
 
         Result(final int status, final String content) {
             this.status = status;
+            //this.statusLine = statusLine;
             this.content = content;
         }
 
     }
 
-    //private static final String USER_PROFILE_URL = "https://api.example.com/user/profile";
+    public void setEndpointURL(String endpointURL) {
+        this.endpointURL = endpointURL;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 
     public String prettyPrintUsingGson(String uglyJsonString) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -41,12 +51,12 @@ public class HttpGetUtils {
         return prettyJsonString;
     }
 
-    public void fetchGithubSchema(String token) throws IOException {
+    public Result getSchema() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet("https://api.github.com/graphql");
+            HttpGet httpGet = new HttpGet(this.endpointURL);
 
             //httpGet.addHeader("Authentication", "Bearer " + token);
-            httpGet.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+            httpGet.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.accessToken);
 
             Result result = httpClient.execute(httpGet, response -> {
                 System.out.println("----------------------------------------");
@@ -54,9 +64,8 @@ public class HttpGetUtils {
                 // Process response message and convert it into a value object
                 return new Result(response.getCode(), EntityUtils.toString(response.getEntity()));
             });
-            System.out.println(result.status);
-            System.out.println("========================================");
-            System.out.println(prettyPrintUsingGson(result.content)); 
+            
+            return result;
         }
     }
 }

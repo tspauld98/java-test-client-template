@@ -2,7 +2,7 @@
  * Copyright (c) 2024 Battle Road Consulting. All rights reserved.
  */
 
- package info.rx00405.test.client.tests.features;
+package info.rx00405.test.client.tests.features.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -37,9 +37,15 @@ public class TestClientMain {
         "\t\t\t\t\twith the system under test for certain\n" + //
         "\t\t\t\t\tscenarios.\n" + //
         "\t--help\t\t\t\tPrint this help message.\n";
+    
+    private static ConfigOptions options = new ConfigOptions();
+
+    public static ConfigOptions getConfigOptions() {
+        return options;
+    }
 
     public static void main(String[] args) {
-        ConfigOptions options = new ConfigOptions();
+        ConfigOptions options = getConfigOptions();
         options.processArgs(args);
 
         if (options.hasInvalidArg()) {

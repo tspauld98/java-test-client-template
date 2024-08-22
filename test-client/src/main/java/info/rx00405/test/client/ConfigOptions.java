@@ -50,4 +50,8 @@ public class ConfigOptions {
     public String getIsoFeature() {
         return isoFeature;
     }
+
+    public String getToken() {
+        return token;
+    }
 }
