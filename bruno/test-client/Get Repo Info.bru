@@ -1,0 +1,44 @@
+meta {
+  name: Get Repo Info
+  type: graphql
+  seq: 3
+}
+
+post {
+  url: https://api.github.com/graphql
+  body: graphql
+  auth: bearer
+}
+
+auth:bearer {
+  token: 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
+}
+
+body:graphql {
+  query {
+    repository(owner: "tspauld98", name: "java-test-client-template") {
+      id
+      name
+      description
+      url
+      stargazerCount
+      forkCount
+      issues(states: OPEN) {
+        totalCount
+      }
+      pullRequests(states: OPEN) {
+        totalCount
+      }
+      isFork
+      isEmpty
+      isLocked
+      isMirror
+      isArchived
+      isDisabled
+      isBlankIssuesEnabled
+      isSecurityPolicyEnabled
+      isUserConfigurationRepository
+    }
+  }
+  
+}
