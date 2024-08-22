@@ -1,0 +1,8 @@
+<aspectj>
+    <aspects>
+        <aspect name="ExecutionTimeAspect"/>
+    </aspects>
+    <weaver>
+        <include within="*"/>
+    </weaver>
+</aspectj>

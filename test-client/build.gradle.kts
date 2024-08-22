@@ -10,6 +10,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     jacoco
     `maven-publish`
+    id("io.freefair.aspectj.post-compile-weaving") version "8.10"
 }
 
 group = "info.rx00405"
@@ -46,6 +47,8 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:2.0.16")
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("commons-validator:commons-validator:1.9.0")
+    implementation("org.aspectj:aspectjrt:1.9.22")
+    implementation("org.aspectj:aspectjweaver:1.9.22")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

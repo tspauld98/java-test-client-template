@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import info.rx00405.test.client.TestClientMain;
+import info.rx00405.test.client.utils.aspects.Timed;
 
 
 public class GithubStepDefinitions {
@@ -35,6 +36,7 @@ public class GithubStepDefinitions {
         return accessToken;
     }
 
+    @Timed
     @Given("the Github API url of {string}")
     public void the_github_api_url_of(String endpointURL) {
         UrlValidator urlValidator = new UrlValidator();
