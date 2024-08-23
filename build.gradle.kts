@@ -6,26 +6,20 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
-    application
+    `java-library`
+    id("io.freefair.aspectj.post-compile-weaving") version "8.10"
+    `maven-publish`
     id("com.github.johnrengelman.shadow") version "8.1.1"
     jacoco
-    `maven-publish`
-    id("io.freefair.aspectj.post-compile-weaving") version "8.10"
-}
-
-group = "info.rx00405"
-version = "1.0-SNAPSHOT"
-
-configurations {}
-
-val cucumberRuntime by configurations.creating {
-    extendsFrom(configurations["testImplementation"])
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenLocal()
     mavenCentral()
+    maven {
+        url = uri("https://repo.maven.apache.org/maven2/")
+    }
 }
 
 dependencies {
@@ -53,6 +47,39 @@ dependencies {
     implementation("com.graphql-java:graphql-java-extended-validation:22.0")
 }
 
+group = "info.rx00405"
+version = "1.0-SNAPSHOT"
+description = "java-test-client-template"
+java.sourceCompatibility = JavaVersion.VERSION_17
+
+jacoco {
+    toolVersion = "0.8.9"
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/tspauld98/java-test-client-template")
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_USERNAME")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_PUB_ACCESS_TOKEN")
+            }
+        }
+    }
+    publications {
+        register<MavenPublication>("gpr") {
+            from(components["java"])
+        }
+    }
+}
+
+configurations {}
+
+val cucumberRuntime by configurations.creating {
+    extendsFrom(configurations["testImplementation"])
+}
+
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
@@ -60,34 +87,42 @@ java {
     }
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = "info.rx00405.test.client.TestClientMain"
+tasks.withType<JavaCompile>() {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType<Javadoc>() {
+    options.encoding = "UTF-8"
 }
 
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
     systemProperty("cucumber.junit-platform.naming-strategy", "long")
+    finalizedBy(tasks.jacocoTestReport)
 }
 
-tasks {
-    // Configuring the default jar task
-    val jar by getting(Jar::class) {
-        archiveBaseName.set("${project.name}-default")
-    }
+tasks.shadowJar {
+    archiveClassifier.set("shaded")
+    manifest {
+        attributes["Created-By"] = "Gradle ${gradle.gradleVersion}"
+        attributes["Main-Class"] = "info.rx00405.test.client.TestClientMain"
+    }   
+    mergeServiceFiles()
+}
 
-    // Configuring the shadow jar task
-    val shadowJar by getting(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {
-        archiveBaseName.set("${project.name}-shadow")
-        archiveClassifier.set("")
-        mergeServiceFiles()
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+
+    // Give jacoco the file generated with the cucumber tests for the coverage.
+    //executionData(files("$buildDir/jacoco/test.exec", "$buildDir/results/jacoco/cucumber.exec"))
+    reports {
+        xml.required.set(true)
     }
 }
 
-// Ensuring that both jars are built when running the build task
 tasks.build {
-    dependsOn(tasks.jar, tasks.shadowJar)
+    dependsOn(tasks.shadowJar)
 }
 
 task("testClient") {
@@ -108,13 +143,5 @@ task("testClient") {
                 .singleFile
             jvmArgs = listOf("-javaagent:$jacocoAgent=destfile=$buildDir/results/jacoco/cucumber.exec,append=false")
         }
-    }
-}
-
-tasks.jacocoTestReport {
-    // Give jacoco the file generated with the cucumber tests for the coverage.
-    executionData(files("$buildDir/jacoco/test.exec", "$buildDir/results/jacoco/cucumber.exec"))
-    reports {
-        xml.required.set(true)
     }
 }
