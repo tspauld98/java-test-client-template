@@ -3,65 +3,72 @@ package info.rx00405.test.client.tests.features.github;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+//import io.cucumber.plugin.event.Result;
 
 //import java.net.URL;
 
 import org.apache.commons.validator.routines.UrlValidator;
 //import org.junit.jupiter.api.Test;
 
+//import com.google.common.graph.Graph;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import org.junit.jupiter.api.function.Executable;
 
 import info.rx00405.test.client.TestClientMain;
+import info.rx00405.test.client.utils.GraphQLAPIClient;
 import info.rx00405.test.client.utils.aspects.Timed;
 
 
 public class GithubStepDefinitions {
-    private String endpointURL = "";
-    private String accessToken = "";
+    private GraphQLAPIClient client = null;
+    //private String endpointURL = "";
+    //private String accessToken = "";
 
-    public void setEndpointURL(String endpointURL) {
-        this.endpointURL = endpointURL;
+    public void setClient(GraphQLAPIClient newClient) {
+        this.client = newClient;
     }
 
-    public String getEndpointURL() {
-        return endpointURL;
+    public GraphQLAPIClient getClient() {
+        return this.client;
     }
 
-    public void setAccessToken(String token) {
-        this.accessToken = token;
-    }
+    // public void setAccessToken(String token) {
+    //     this.accessToken = token;
+    // }
 
-    public String getAccessToken() {
-        return accessToken;
-    }
+    // public String getAccessToken() {
+    //     return accessToken;
+    // }
 
-    @Timed
     @Given("the Github API url of {string}")
     public void the_github_api_url_of(String endpointURL) {
         UrlValidator urlValidator = new UrlValidator();
+        assertTrue(urlValidator.isValid(endpointURL));
 
-        setEndpointURL(endpointURL);
-
-        assertTrue(urlValidator.isValid(getEndpointURL()));
-        // Write code here that turns the phrase above into concrete actions
-        //throw new io.cucumber.java.PendingException();
+        setClient(new GraphQLAPIClient());
+        getClient().setEndpointURL(endpointURL);
     }
 
     @Given("the access token is present")
     public void the_access_token_is_present() {
-        setAccessToken(TestClientMain.getConfigOptions().getToken());
-        assertNotSame(null, getAccessToken());
-        assertNotSame("", getAccessToken());
+        String currToken = TestClientMain.getConfigOptions().getToken();
+        assertNotSame(null, currToken);
+        assertNotSame("", currToken);
 
-        // Write code here that turns the phrase above into concrete actions
-        //throw new io.cucumber.java.PendingException();
+        getClient().setAccessToken(currToken);
     }
 
+    @Timed
     @When("I check the connection")
     public void i_check_the_connection() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        GraphQLAPIClient client = getClient();
+        Executable exec = () -> client.getSchema();
+        assertDoesNotThrow(exec);
+        assertTrue(client.getResultStatus() == 200);
+        //System.out.println(client.prettyPrintUsingGson(client.getResultContent()));
     }
 
     @Then("I should receive a valid GraphQL schema")

@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.guava)
     implementation(platform("org.junit:junit-bom:5.10.3"))
     implementation("org.junit.jupiter:junit-jupiter")
+    implementation("org.junit.jupiter:junit-jupiter-api")
     implementation("org.junit.platform:junit-platform-launcher")
     implementation("org.junit.platform:junit-platform-suite-api")
     implementation("io.cucumber:cucumber-java:7.18.1")

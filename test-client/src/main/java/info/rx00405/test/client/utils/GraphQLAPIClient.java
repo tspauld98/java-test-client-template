@@ -36,12 +36,26 @@ public class GraphQLAPIClient {
 
     }
 
+    private Result currResult = null;
+
     public void setEndpointURL(String endpointURL) {
         this.endpointURL = endpointURL;
     }
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    private void setResult(Result result) {
+        this.currResult = result;
+    }
+
+    public Integer getResultStatus() {
+        return currResult.status;
+    }
+
+    public String getResultContent() {
+        return currResult.content;
     }
 
     public String prettyPrintUsingGson(String uglyJsonString) {
@@ -51,12 +65,13 @@ public class GraphQLAPIClient {
         return prettyJsonString;
     }
 
-    public Result getSchema() throws IOException {
+    public void getSchema() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet(this.endpointURL);
 
-            //httpGet.addHeader("Authentication", "Bearer " + token);
-            httpGet.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.accessToken);
+            if (this.accessToken != null && !this.accessToken.isEmpty()) {
+                httpGet.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.accessToken);
+            }
 
             Result result = httpClient.execute(httpGet, response -> {
                 System.out.println("----------------------------------------");
@@ -64,8 +79,12 @@ public class GraphQLAPIClient {
                 // Process response message and convert it into a value object
                 return new Result(response.getCode(), EntityUtils.toString(response.getEntity()));
             });
-            
-            return result;
+
+            setResult(result);
+        } catch (IOException e) {
+            System.err.println("An error occurred while getting the schema: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
     }
 }
