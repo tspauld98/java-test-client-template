@@ -17,7 +17,7 @@ public class ExecutionTimeAspect {
         Object proceed = joinPoint.proceed();
         long executionTime = System.currentTimeMillis() - start;
 
-        System.out.println(joinPoint.getSignature() + " executed in " + executionTime + "ms");
+        System.out.println("    " + joinPoint.getSignature() + " executed in " + executionTime + "ms");
         return proceed;
     }
 }

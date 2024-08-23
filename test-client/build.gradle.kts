@@ -50,6 +50,7 @@ dependencies {
     implementation("commons-validator:commons-validator:1.9.0")
     implementation("org.aspectj:aspectjrt:1.9.22")
     implementation("org.aspectj:aspectjweaver:1.9.22")
+    implementation("com.graphql-java:graphql-java-extended-validation:22.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

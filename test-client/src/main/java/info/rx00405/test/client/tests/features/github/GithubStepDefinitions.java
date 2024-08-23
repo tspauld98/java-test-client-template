@@ -13,9 +13,25 @@ import org.apache.commons.validator.routines.UrlValidator;
 //import com.google.common.graph.Graph;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+//import java.util.List;
+//import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import org.junit.jupiter.api.function.Executable;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+// import graphql.schema.GraphQLSchema;
+// import graphql.schema.idl.SchemaParser;
+// import graphql.schema.idl.TypeDefinitionRegistry;
+// import graphql.schema.idl.RuntimeWiring;
+// import graphql.schema.idl.SchemaGenerator;
+// import graphql.schema.validation.SchemaValidator;
+// import graphql.schema.validation.SchemaValidationError;
 
 import info.rx00405.test.client.TestClientMain;
 import info.rx00405.test.client.utils.GraphQLAPIClient;
@@ -73,8 +89,49 @@ public class GithubStepDefinitions {
 
     @Then("I should receive a valid GraphQL schema")
     public void i_should_receive_a_valid_graph_ql_schema() {
+        String schemaString = getClient().getResultContent();
+
+        JsonElement jsonElement = JsonParser.parseString(schemaString);
+        assertTrue(!jsonElement.isJsonNull());
+
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        assertTrue(jsonObject.has("data"));
+
+        JsonObject dataJsonObject = jsonObject.getAsJsonObject("data");
+        assertTrue(dataJsonObject.has("__schema"));
+
+        JsonObject schemaJsonObject = dataJsonObject.getAsJsonObject("__schema");
+        assertTrue(schemaJsonObject.has("queryType"));
+        assertTrue(schemaJsonObject.has("mutationType"));
+        assertTrue(schemaJsonObject.has("types"));
+
+        //String newSchemaString = newJsonObject.toString();
+
+        //System.out.println(newSchemaString);
+    
+    
+        // // Parse the schema string to create a GraphQLSchema object
+        // SchemaParser schemaParser = new SchemaParser();
+        // TypeDefinitionRegistry typeRegistry = schemaParser.parse(newSchemaString);
+        // RuntimeWiring wiring = RuntimeWiring.newRuntimeWiring().build();
+        // SchemaGenerator schemaGenerator = new SchemaGenerator();
+        // GraphQLSchema schema = schemaGenerator.makeExecutableSchema(typeRegistry, wiring);
+
+        // // Validate the schema
+        // SchemaValidator validator = new SchemaValidator();
+        // Set<SchemaValidationError> errors = validator.validateSchema(schema);
+
+        // if (!errors.isEmpty()) {
+        //     // Handle validation errors
+
+        //     System.out.println(errors.toArray()[0]);
+        //     // for (SchemaValidationError error : errors) {
+        //     //     System.out.println(error.getDescription());
+        //     //     break;
+        //     // }
+        // }
         // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //throw new io.cucumber.java.PendingException();
     }
 
     @When("I fetch the repository information")
