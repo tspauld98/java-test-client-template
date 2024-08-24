@@ -47,12 +47,25 @@ jobs:
     # - name: Build with Gradle 8.9
     #   run: gradle build
       
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
       with:
-        name: Package
-        path: build/libs
-
+        files: |
+          build/test-results/**/*.xml
+          build/test-results/**/*.trx
+          build/test-results/**/*.json
+    
+    - name: Publish Test Coverage Report
+      id: jacoco
+      uses: madrapps/jacoco-report@v1.6
+      with:
+        paths: ${{ github.workspace }}/**/build/reports/jacoco/test/jacocoTestReport.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
+        title: Code Coverage
+        update-comment: true
+        debug-mode: false
+  
   dependency-submission:
 
     runs-on: ubuntu-latest

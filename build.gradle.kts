@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
     // Use JUnit Jupiter for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.3")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
@@ -53,7 +53,7 @@ description = "java-test-client-template"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 jacoco {
-    toolVersion = "0.8.9"
+    toolVersion = "0.8.12"
 }
 
 publishing {
