@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024 Battle Road Consulting. All rights reserved.
+ * 
+ */
+
 package info.rx00405.test.client;
 
 import org.junit.jupiter.api.Disabled;
