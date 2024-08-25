@@ -49,7 +49,7 @@ dependencies {
 
 group = "info.rx00405"
 version = "1.0-SNAPSHOT"
-description = "java-test-client-template"
+description = "test-client"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 jacoco {
