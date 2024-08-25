@@ -35,6 +35,9 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
+    - name: Print metadata
+      run: echo $GITHUB_USERNAME && echo $GITHUB_PUB_ACCESS_TOKEN
+
     # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
     # the publishing section of your build.gradle
     - name: Publish to GitHub Packages
