@@ -1,5 +1,10 @@
 # Java Behavior-Driven Development Test Client Template
 
+[![CI/CD badge](https://github.com/tspauld98/java-test-client-templatr/actions/workflows/gradle.yml/badge.svg)](https://github.com/tspauld98/java-test-client-template/actions/workflows/gradle.yml)
+[![GitHub release badge](https://img.shields.io/github/v/release/tspauld98/java-test-client-template)](https://github.com/tspauld98/java-test-client-template/releases/latest)
+[![License badge](https://img.shields.io/github/license/tspauld98/java-test-client-template)](https://opensource.org/license/mit)
+[![GitHub issues badge](https://img.shields.io/github/issues/tspauld98/java-test-client-template.svg)](https://github.com/tspauld98/java-test-client-template/issues)
+
 This repository is a template project for building a Java test client that can be run independently from its test target.  This pattern of testing is typically referred to as end-to-end (E2E) integration testing.  This test client uses the JUnit 5 (Jupiter) test engine to run Cucumber-defined tests.  Cucumber is a behavior-driven development (BDD) testing framework that allows tests to be written in plain English.  This allows non-developers to write tests that can be run by developers.  The Cucumber tests are written in the Gherkin language, which is a plain-text language that is easy to understand and write.  The build of this project is built for Github and Github Actions CI/CD pipeline.  If you use this project as a template and you want to use a different CI/CD pipeline, you will need to modify the `build.gradle.kts` file to accommodate your pipeline.  All the Github Actions workflows are in the `.github/workflows` directory so if you are not using Github Actions, you can delete this directory when you create your own repository from this template.
 
 ## Why Cucumber and Why Using this Pattern?
