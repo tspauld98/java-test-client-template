@@ -4,10 +4,12 @@
 
 package info.rx00405.test.client.tests.features.github;
 
+import io.cucumber.cienvironment.internal.com.eclipsesource.json.Json;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 //import io.cucumber.plugin.event.Result;
+import io.cucumber.java.lu.a.as;
 
 //import java.net.URL;
 
@@ -17,6 +19,7 @@ import org.apache.commons.validator.routines.UrlValidator;
 //import com.google.common.graph.Graph;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 //import java.util.List;
 //import java.util.Set;
@@ -44,6 +47,8 @@ import info.rx00405.test.client.utils.aspects.Timed;
 
 public class GithubStepDefinitions {
     private GraphQLAPIClient client = null;
+    private JsonObject repoJsonObject = null;
+
     //private String endpointURL = "";
     //private String accessToken = "";
 
@@ -53,6 +58,14 @@ public class GithubStepDefinitions {
 
     public GraphQLAPIClient getClient() {
         return this.client;
+    }
+
+    public void setRepoJsonObject(JsonObject newRepoJsonObject) {
+        this.repoJsonObject = newRepoJsonObject;
+    }
+
+    public JsonObject getRepoJsonObject() {
+        return this.repoJsonObject;
     }
 
     // public void setAccessToken(String token) {
@@ -139,69 +152,80 @@ public class GithubStepDefinitions {
         //throw new io.cucumber.java.PendingException();
     }
 
-    @When("I fetch the repository information")
-    public void i_fetch_the_repository_information() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    @Timed
+    @When("I fetch the repository information for {string} owned by {string}")
+    public void i_fetch_the_repository_information(String repoName, String ownerName) {
+        GraphQLAPIClient client = getClient();
+        Executable exec = () -> client.getRepoInfo(ownerName, repoName);
+        assertDoesNotThrow(exec);
+        System.out.println("    HTTP Response Status Code: " + client.getResultStatus());
+        assertTrue(client.getResultStatus() == 200);
+        //System.out.println(client.prettyPrintUsingGson(client.getResultContent()));
     }
 
     @Then("I should see the correct repository node")
     public void i_should_see_the_correct_repository_node() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
-    }
+        String payloadString = getClient().getResultContent();
 
-    @Then("I should see the correct repository owner")
-    public void i_should_see_the_correct_repository_owner() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        JsonElement jsonElement = JsonParser.parseString(payloadString);
+        assertTrue(!jsonElement.isJsonNull());
+
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        assertTrue(jsonObject.has("data"));
+
+        JsonObject dataJsonObject = jsonObject.getAsJsonObject("data");
+        assertTrue(dataJsonObject.has("repository"));
+
+        setRepoJsonObject(dataJsonObject.getAsJsonObject("repository"));
+        assertTrue(getRepoJsonObject().has("name"));
+        assertTrue(getRepoJsonObject().has("description"));
     }
 
     @Then("I should see the correct repository url")
     public void i_should_see_the_correct_repository_url() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(getRepoJsonObject().has("url"));
+        assertTrue(getRepoJsonObject().get("url").getAsString().contains("java-test-client-template"));
     }
 
     @Then("I should see that blank issues are allowed")
     public void i_should_see_that_blank_issues_are_allowed() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(getRepoJsonObject().has("isBlankIssuesEnabled"));
+        assertTrue(getRepoJsonObject().get("isBlankIssuesEnabled").getAsBoolean());
     }
 
     @Then("I should not see that the repository is archived")
     public void i_should_not_see_that_the_repository_is_archived() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(getRepoJsonObject().has("isArchived"));
+        assertFalse(getRepoJsonObject().get("isArchived").getAsBoolean());
     }
 
     @Then("I should not see that the repository is disabled")
     public void i_should_not_see_that_the_repository_is_disabled() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(getRepoJsonObject().has("isDisabled"));
+        assertFalse(getRepoJsonObject().get("isDisabled").getAsBoolean());
     }
 
     @Then("I should not see that the repository is locked")
     public void i_should_not_see_that_the_repository_is_locked() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(getRepoJsonObject().has("isLocked"));
+        assertFalse(getRepoJsonObject().get("isLocked").getAsBoolean());
     }
 
     @Then("I should not see that the repository is empty")
     public void i_should_not_see_that_the_repository_is_empty() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(getRepoJsonObject().has("isEmpty"));
+        assertFalse(getRepoJsonObject().get("isEmpty").getAsBoolean());
     }
 
     @Then("I should not see that the repository is a fork")
     public void i_should_not_see_that_the_repository_is_a_fork() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(getRepoJsonObject().has("isFork"));
+        assertFalse(getRepoJsonObject().get("isFork").getAsBoolean());
     }
 
     @Then("I should not see that the repository is a mirror")
     public void i_should_not_see_that_the_repository_is_a_mirror() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertTrue(getRepoJsonObject().has("isMirror"));
+        assertFalse(getRepoJsonObject().get("isMirror").getAsBoolean());
     }
 }
