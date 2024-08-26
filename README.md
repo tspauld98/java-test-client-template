@@ -29,8 +29,8 @@ Normally, when using Cucumber in a Java project, the Cucumber tests are run as p
 
 #### Steps for Installing and Running a Pre-Built Test Client
 
-1. Download the latest version of the released test client from the [releases page](https://github.com/tspauld98/java-test-client-template/releases)
-2. Create a personal access token (classic) in Github by following the instructions [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
+1. Download the latest version of the test client JAR, `test-client-<version>-shaded.jar`, from the [packages page](https://github.com/tspauld98/java-test-client-template/packages) by clicking on the `info.rx00405.test-client` package and downloading the shaded JAR file from the `Assets` list of links on the right side of the page.
+2. Create a personal access token (classic) in Github by following the instructions [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).  The tests in this template do not require write privileges to Github, so you can create a token with read-only privileges.
 
   > **NOTE:** The tests call the Github GraphQL API, which requires an access token to authenticate the user.  For some reason, API access requires the *classic* version of a personal access token.  Make sure you are careful about storing and using your access token.  Do **NOT** save it in configuration files or hard-code it in your code.  That is a security issue (compromised secrets).  Instead, use environment variables or a secret manager to store and retrieve the access token and pass it into the test client as a command-line argument.
 
@@ -39,7 +39,7 @@ Normally, when using Cucumber in a Java project, the Cucumber tests are run as p
 5. Since the test client is an executable JAR file, it can be run using the following command:
 
 ```bash
-  java -jar java-test-client-template-<version>-shaded.jar --token=<Github Personal Access Token>
+  java -jar test-client-<version>-shaded.jar --token=<Github Personal Access Token>
 ```
 
 ### Installing and Running the Test Client from Source
@@ -86,7 +86,7 @@ Normally, when using Cucumber in a Java project, the Cucumber tests are run as p
 ## JAR Usage
 
 ```bash
-  java -jar [PATH to JAR/]test-client-shadow-<version>.jar [--run-quiet] [--iso-feature <iso-feature>] [--token <access-token>] [--help]
+  java -jar [PATH to JAR/]test-client-<version>-shaded.jar [--run-quiet] [--iso-feature <iso-feature>] [--token <access-token>] [--help]
 ```
 
 ### Command-Line Options
