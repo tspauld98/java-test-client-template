@@ -1,6 +1,6 @@
 # Java Behavior-Driven Development Test Client Template
 
-[![CI/CD badge](https://github.com/tspauld98/java-test-client-templatr/actions/workflows/gradle.yml/badge.svg)](https://github.com/tspauld98/java-test-client-template/actions/workflows/gradle.yml)
+[![CI/CD badge](https://github.com/tspauld98/java-test-client-template/actions/workflows/gradle.yml/badge.svg)](https://github.com/tspauld98/java-test-client-template/actions/workflows/gradle.yml)
 [![GitHub release badge](https://img.shields.io/github/v/release/tspauld98/java-test-client-template)](https://github.com/tspauld98/java-test-client-template/releases/latest)
 [![License badge](https://img.shields.io/github/license/tspauld98/java-test-client-template)](https://opensource.org/license/mit)
 [![GitHub issues badge](https://img.shields.io/github/issues/tspauld98/java-test-client-template.svg)](https://github.com/tspauld98/java-test-client-template/issues)
