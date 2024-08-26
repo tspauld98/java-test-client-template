@@ -131,12 +131,7 @@ task("testClient") {
         javaexec {
             mainClass.set("info.rx00405.test.client.TestClientMain")
             classpath = cucumberRuntime + sourceSets.main.get().output + sourceSets.test.get().output
-            // Change glue for your project package where the step definitions are.
-            // And where the feature files are.
-            //args = listOf("--plugin", "pretty", "--glue", "info.rx00405.test.client.tests.features", "src/main/resources")
-            //val initialArgs = emptyList();
             args = project.findProperty("testClientArgs")?.toString()?.split(" ") ?: emptyList();
-            //args = initialArgs + additionalArgs
             // Configure jacoco agent for the test coverage.
             val jacocoAgent = zipTree(configurations.jacocoAgent.get().singleFile)
                 .filter { it.name == "jacocoagent.jar" }

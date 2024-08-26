@@ -4,26 +4,13 @@
 
 package info.rx00405.test.client.tests.features.github;
 
-import io.cucumber.cienvironment.internal.com.eclipsesource.json.Json;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-//import io.cucumber.plugin.event.Result;
-import io.cucumber.java.lu.a.as;
-
-//import java.net.URL;
 
 import org.apache.commons.validator.routines.UrlValidator;
-//import org.junit.jupiter.api.Test;
-
-//import com.google.common.graph.Graph;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-
-//import java.util.List;
-//import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import org.junit.jupiter.api.function.Executable;
@@ -31,14 +18,6 @@ import org.junit.jupiter.api.function.Executable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-// import graphql.schema.GraphQLSchema;
-// import graphql.schema.idl.SchemaParser;
-// import graphql.schema.idl.TypeDefinitionRegistry;
-// import graphql.schema.idl.RuntimeWiring;
-// import graphql.schema.idl.SchemaGenerator;
-// import graphql.schema.validation.SchemaValidator;
-// import graphql.schema.validation.SchemaValidationError;
 
 import info.rx00405.test.client.TestClientMain;
 import info.rx00405.test.client.utils.GraphQLAPIClient;
@@ -48,9 +27,6 @@ import info.rx00405.test.client.utils.aspects.Timed;
 public class GithubStepDefinitions {
     private GraphQLAPIClient client = null;
     private JsonObject repoJsonObject = null;
-
-    //private String endpointURL = "";
-    //private String accessToken = "";
 
     public void setClient(GraphQLAPIClient newClient) {
         this.client = newClient;
@@ -67,14 +43,6 @@ public class GithubStepDefinitions {
     public JsonObject getRepoJsonObject() {
         return this.repoJsonObject;
     }
-
-    // public void setAccessToken(String token) {
-    //     this.accessToken = token;
-    // }
-
-    // public String getAccessToken() {
-    //     return accessToken;
-    // }
 
     @Given("the Github API url of {string}")
     public void the_github_api_url_of(String endpointURL) {
@@ -122,34 +90,6 @@ public class GithubStepDefinitions {
         assertTrue(schemaJsonObject.has("queryType"));
         assertTrue(schemaJsonObject.has("mutationType"));
         assertTrue(schemaJsonObject.has("types"));
-
-        //String newSchemaString = newJsonObject.toString();
-
-        //System.out.println(newSchemaString);
-    
-    
-        // // Parse the schema string to create a GraphQLSchema object
-        // SchemaParser schemaParser = new SchemaParser();
-        // TypeDefinitionRegistry typeRegistry = schemaParser.parse(newSchemaString);
-        // RuntimeWiring wiring = RuntimeWiring.newRuntimeWiring().build();
-        // SchemaGenerator schemaGenerator = new SchemaGenerator();
-        // GraphQLSchema schema = schemaGenerator.makeExecutableSchema(typeRegistry, wiring);
-
-        // // Validate the schema
-        // SchemaValidator validator = new SchemaValidator();
-        // Set<SchemaValidationError> errors = validator.validateSchema(schema);
-
-        // if (!errors.isEmpty()) {
-        //     // Handle validation errors
-
-        //     System.out.println(errors.toArray()[0]);
-        //     // for (SchemaValidationError error : errors) {
-        //     //     System.out.println(error.getDescription());
-        //     //     break;
-        //     // }
-        // }
-        // Write code here that turns the phrase above into concrete actions
-        //throw new io.cucumber.java.PendingException();
     }
 
     @Timed

@@ -6,8 +6,6 @@ package info.rx00405.test.client;
 
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
 
-// import info.rx00405.test.client.utils.HttpGetUtils;
-
 public class TestClientMain {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_RED = "\u001B[31m";
@@ -78,12 +76,5 @@ public class TestClientMain {
                 }
             }
         }
-
-        // HttpGetUtils utils = new HttpGetUtils();
-        // try {
-        //     utils.fetchGithubSchema("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");
-        // } catch (Exception e) {
-        //     e.printStackTrace();
-        // }
     }
 }

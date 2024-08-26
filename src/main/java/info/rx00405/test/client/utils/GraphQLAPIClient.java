@@ -6,14 +6,12 @@ package info.rx00405.test.client.utils;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
-//import org.apache.hc.client5.http.fluent.Request;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
-//import org.apache.hc.core5.http.message.StatusLine;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -86,6 +84,7 @@ public class GraphQLAPIClient {
             Result result = httpClient.execute(httpGet, response -> {
                 //System.out.println("----------------------------------------");
                 //System.out.println(httpGet + "->" + new StatusLine(response));
+
                 // Process response message and convert it into a value object
                 return new Result(response.getCode(), EntityUtils.toString(response.getEntity()));
             });
@@ -115,6 +114,7 @@ public class GraphQLAPIClient {
             Result result = httpClient.execute(httpPost, response -> {
                 //System.out.println("----------------------------------------");
                 //System.out.println(httpGet + "->" + new StatusLine(response));
+                
                 // Process response message and convert it into a value object
                 return new Result(response.getCode(), EntityUtils.toString(response.getEntity()));
             });
