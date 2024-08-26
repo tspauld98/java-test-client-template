@@ -16,3 +16,6 @@ test-results
 
 # Ignore Mac-specific files
 .DS_Store
+
+# Ignore Bruno files until we store secrets externally
+bruno
