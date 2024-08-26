@@ -87,6 +87,7 @@ public class GithubStepDefinitions {
         GraphQLAPIClient client = getClient();
         Executable exec = () -> client.getSchema();
         assertDoesNotThrow(exec);
+        System.out.println("    HTTP Response Status Code: " + client.getResultStatus());
         assertTrue(client.getResultStatus() == 200);
         //System.out.println(client.prettyPrintUsingGson(client.getResultContent()));
     }
