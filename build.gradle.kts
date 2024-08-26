@@ -48,7 +48,7 @@ dependencies {
 }
 
 group = "info.rx00405"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 description = "test-client"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
