@@ -7,9 +7,9 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     `java-library`
-    id("io.freefair.aspectj.post-compile-weaving") version "8.10"
+    id("io.freefair.aspectj.post-compile-weaving") version "9.5.0"
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "9.6.1"
     jacoco
 }
 
@@ -76,7 +76,7 @@ publishing {
 
 configurations {}
 
-val cucumberRuntime by configurations.creating {
+val cucumberRuntime = configurations.create("cucumberRuntime") {
     extendsFrom(configurations["testImplementation"])
 }
 
@@ -125,18 +125,17 @@ tasks.build {
     dependsOn(tasks.shadowJar)
 }
 
-task("testClient") {
+tasks.register<JavaExec>("testClient") {
     dependsOn("assemble", "compileTestJava")
-    doLast {
-        javaexec {
-            mainClass.set("info.rx00405.test.client.TestClientMain")
-            classpath = cucumberRuntime + sourceSets.main.get().output + sourceSets.test.get().output
-            args = project.findProperty("testClientArgs")?.toString()?.split(" ") ?: emptyList();
-            // Configure jacoco agent for the test coverage.
-            val jacocoAgent = zipTree(configurations.jacocoAgent.get().singleFile)
-                .filter { it.name == "jacocoagent.jar" }
-                .singleFile
-            jvmArgs = listOf("-javaagent:$jacocoAgent=destfile=$buildDir/results/jacoco/cucumber.exec,append=false")
-        }
+    mainClass.set("info.rx00405.test.client.TestClientMain")
+    classpath = cucumberRuntime + sourceSets.main.get().output + sourceSets.test.get().output
+    args = project.findProperty("testClientArgs")?.toString()?.split(" ") ?: emptyList<String>()
+    doFirst {
+        // Configure jacoco agent for the test coverage.
+        val jacocoAgent = zipTree(configurations.jacocoAgent.get().singleFile)
+            .filter { it.name == "jacocoagent.jar" }
+            .singleFile
+        val cucumberExecFile = layout.buildDirectory.file("results/jacoco/cucumber.exec").get().asFile
+        jvmArgs = listOf("-javaagent:$jacocoAgent=destfile=$cucumberExecFile,append=false")
     }
 }
